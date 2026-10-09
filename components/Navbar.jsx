@@ -1,4 +1,4 @@
-// src/components/Navbar.jsx
+// components/Navbar.jsx
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,14 +21,16 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-base-100 shadow-sm border-b border-gray-100">
-      {/* 1. Top Bar */}
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-[#f4f6f0] border-b border-gray-200">
+      {/* 1. Top Navbar */}
+      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <div className="bg-emerald-600 text-white p-2 rounded-lg text-xl font-bold">🛒</div>
+          <div className="bg-[#0f834d] text-white p-2 rounded-xl text-xl font-bold flex items-center justify-center">
+            🛒
+          </div>
           <div>
-            <h1 className="text-xl font-bold text-emerald-800">বাজার দর</h1>
-            <p className="text-xs text-gray-500">শুক্রবার, ৯ অক্টোবর, ২০২৬</p>
+            <h1 className="text-xl font-bold text-gray-900 leading-tight">বাজার দর</h1>
+            <p className="text-xs text-gray-500">মঙ্গলবার, ৬ অক্টোবর, ২০২৬</p>
           </div>
         </Link>
 
@@ -36,43 +38,44 @@ export default function Navbar() {
           <Link href="/signin" className="btn btn-sm btn-ghost text-gray-700">
             সাইন ইন
           </Link>
-          <Link href="/signup" className="btn btn-sm bg-emerald-600 text-white hover:bg-emerald-700">
+          <Link href="/signup" className="btn btn-sm bg-[#0f834d] hover:bg-[#0c6b3e] text-white border-none rounded-lg px-4">
             সাইন আপ
           </Link>
         </div>
       </div>
 
       {/* 2. Category Nav Links */}
-      <div className="bg-gray-50 border-t border-b border-gray-200 overflow-x-auto">
-        <div className="max-w-7xl mx-auto px-4 flex gap-2 py-2 whitespace-nowrap">
+      <div className="border-t border-b border-gray-200 bg-white/50 backdrop-blur-sm overflow-x-auto">
+        <div className="max-w-6xl mx-auto px-4 flex gap-2 py-2 whitespace-nowrap">
           {categories.map((cat) => {
             const isActive = pathname === `/category/${cat.slug}`;
             return (
               <Link
                 key={cat.id}
                 href={`/category/${cat.slug}`}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1 ${
                   isActive
-                    ? "bg-emerald-600 text-white shadow"
+                    ? "bg-[#0f834d] text-white shadow-sm"
                     : "text-gray-700 hover:bg-gray-200"
                 }`}
               >
-                {cat.icon} {cat.nameBn}
+                <span>{cat.icon}</span>
+                <span>{cat.nameBn}</span>
               </Link>
             );
           })}
         </div>
       </div>
 
-      {/* 3. Price Ticker (Marquee) */}
-      <div className="bg-emerald-50 text-emerald-900 text-xs py-1.5 overflow-hidden whitespace-nowrap border-b border-emerald-100">
+      {/* 3. Running Price Ticker (Marquee) */}
+      <div className="bg-white/80 border-b border-gray-200 text-xs py-2 overflow-hidden whitespace-nowrap">
         <div className="inline-block animate-marquee space-x-6">
           {products.map((p) => (
-            <span key={p.id} className="inline-flex items-center gap-1 font-medium mx-4">
+            <span key={p.id} className="inline-flex items-center gap-1 font-medium mx-4 text-gray-700">
               <span>{p.image}</span>
-              <span>{p.nameBn}</span>
-              <span className="font-semibold">{toBnDigit(p.today)} টাকা/{p.unit}</span>
-              <span className={p.change?.dir === "up" ? "text-red-600" : p.change?.dir === "down" ? "text-emerald-600" : "text-gray-500"}>
+              <span className="font-semibold">{p.nameBn}</span>
+              <span>{toBnDigit(p.today)} টাকা/{p.unit}</span>
+              <span className={p.change?.dir === "up" ? "text-red-600 font-bold" : p.change?.dir === "down" ? "text-[#0f834d] font-bold" : "text-gray-500"}>
                 {p.change?.dir === "up" ? "▲" : p.change?.dir === "down" ? "▼" : "—"}{" "}
                 {toBnDigit(Math.abs(p.change?.pct || 0))}%
               </span>
