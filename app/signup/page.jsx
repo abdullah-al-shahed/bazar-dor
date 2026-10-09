@@ -1,22 +1,52 @@
 // app/signup/page.jsx
 "use client";
-import Link from "next/link";
+
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { signUp, signIn } from "@/lib/auth-client";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    router.push("/signin");
+    setLoading(true);
+
+    try {
+      await signUp.email({
+        name,
+        email,
+        password,
+        callbackURL: "/signin",
+      });
+      toast.success("অ্যাকাউন্ট তৈরি সফল হয়েছে! এখন সাইন ইন করুন।");
+      router.push("/signin");
+    } catch (err) {
+      toast.error(err?.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSocialSignIn = async (provider) => {
+    try {
+      await signIn.social({
+        provider,
+        callbackURL: "/",
+      });
+    } catch (err) {
+      toast.error("সোশ্যাল সাইন ইন ব্যর্থ হয়েছে!");
+    }
   };
 
   return (
-    <main className="min-h-[85vh] flex flex-col items-center justify-center px-4 py-10 bg-[#f4f6f0]">
+    <main className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-10">
       <div className="text-center mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">অ্যাকাউন্ট তৈরি করুন</h1>
         <p className="text-xs text-gray-500 mt-1">বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।</p>
@@ -60,8 +90,12 @@ export default function SignUpPage() {
             />
           </div>
 
-          <button type="submit" className="btn bg-[#0f834d] hover:bg-[#0c6b3e] text-white w-full rounded-lg border-none text-xs">
-            অ্যাকাউন্ট তৈরি করুন
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn bg-[#0f834d] hover:bg-[#0c6b3e] text-white w-full rounded-lg border-none text-xs"
+          >
+            {loading ? "অপেক্ষা করুন..." : "অ্যাকাউন্ট তৈরি করুন"}
           </button>
         </form>
 
@@ -69,13 +103,13 @@ export default function SignUpPage() {
 
         <div className="space-y-2">
           <button
-            onClick={() => router.push("/")}
+            onClick={() => handleSocialSignIn("google")}
             className="btn btn-outline w-full rounded-lg text-xs font-normal border-gray-300 flex items-center justify-center gap-2"
           >
             <span>🌐</span> Google দিয়ে চালিয়ে যান
           </button>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => handleSocialSignIn("github")}
             className="btn btn-outline w-full rounded-lg text-xs font-normal border-gray-300 flex items-center justify-center gap-2"
           >
             <span>🐙</span> GitHub দিয়ে চালিয়ে যান

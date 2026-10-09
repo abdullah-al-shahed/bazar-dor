@@ -1,4 +1,3 @@
-// src/app/page.jsx
 "use client";
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
@@ -50,7 +49,13 @@ export default function HomePage() {
             সব পণ্য দেখুন
           </a>
         </div>
-        <div className="text-8xl">🧺</div>
+        <div className="flex justify-center items-center w-full md:w-auto">
+    <img
+      src="/bazar-hero.png"
+      alt="Hero Basket"
+      className="w-56 md:w-72 h-auto object-contain drop-shadow-md"
+    />
+  </div>
       </section>
 
       {/* 2. Section A: আজ দাম বেড়েছে */}

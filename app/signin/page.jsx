@@ -1,22 +1,50 @@
 // app/signin/page.jsx
 "use client";
-import Link from "next/link";
+
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { signIn } from "@/lib/auth-client";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // লগইন লজিক
-    router.push("/");
+    setLoading(true);
+
+    try {
+      await signIn.email({
+        email,
+        password,
+        callbackURL: "/",
+      });
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
+      router.push("/");
+    } catch (err) {
+      toast.error(err?.message || "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSocialSignIn = async (provider) => {
+    try {
+      await signIn.social({
+        provider,
+        callbackURL: "/",
+      });
+    } catch (err) {
+      toast.error("সোশ্যাল লগইন ব্যর্থ হয়েছে!");
+    }
   };
 
   return (
-    <main className="min-h-[85vh] flex flex-col items-center justify-center px-4 py-10 bg-[#f4f6f0]">
+    <main className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-10">
       <div className="text-center mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">সাইন ইন</h1>
         <p className="text-xs text-gray-500 mt-1">বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।</p>
@@ -48,8 +76,12 @@ export default function SignInPage() {
             />
           </div>
 
-          <button type="submit" className="btn bg-[#0f834d] hover:bg-[#0c6b3e] text-white w-full rounded-lg border-none text-xs">
-            সাইন ইন
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn bg-[#0f834d] hover:bg-[#0c6b3e] text-white w-full rounded-lg border-none text-xs"
+          >
+            {loading ? "অপেক্ষা করুন..." : "সাইন ইন"}
           </button>
         </form>
 
@@ -57,13 +89,13 @@ export default function SignInPage() {
 
         <div className="space-y-2">
           <button
-            onClick={() => router.push("/")}
+            onClick={() => handleSocialSignIn("google")}
             className="btn btn-outline w-full rounded-lg text-xs font-normal border-gray-300 flex items-center justify-center gap-2"
           >
             <span>🌐</span> Google দিয়ে চালিয়ে যান
           </button>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => handleSocialSignIn("github")}
             className="btn btn-outline w-full rounded-lg text-xs font-normal border-gray-300 flex items-center justify-center gap-2"
           >
             <span>🐙</span> GitHub দিয়ে চালিয়ে যান

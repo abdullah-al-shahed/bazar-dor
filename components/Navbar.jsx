@@ -25,9 +25,7 @@ export default function Navbar() {
       {/* 1. Top Navbar */}
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <div className="bg-[#0f834d] text-white p-2 rounded-xl text-xl font-bold flex items-center justify-center">
-            🛒
-          </div>
+          <img src="/logo-icon.png" alt="Logo" className="w-7 h-7 object-contain" />
           <div>
             <h1 className="text-xl font-bold text-gray-900 leading-tight">বাজার দর</h1>
             <p className="text-xs text-gray-500">মঙ্গলবার, ৬ অক্টোবর, ২০২৬</p>
