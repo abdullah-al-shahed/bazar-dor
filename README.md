@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛒 BazarDor (বাজার দর)
 
-## Getting Started
+**BazarDor** is a dynamic web application designed to help users easily track daily commodity prices, compare market rates, and monitor price fluctuations at a glance.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Technologies Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Frontend Framework:** Next.js 15 (App Router)
+- **UI Library & Styling:** Tailwind CSS, DaisyUI
+- **Language:** JavaScript (ES6+)
+- **Authentication:** BetterAuth (Email/Password & Social Auth)
+- **Notification:** React Hot Toast
+- **Deployment Platform:** Vercel
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Key Features
 
-## Learn More
+1. **Product Filtering & Dynamic Routes:** Filter products by categories and view individual details pages for each item (`/product/[slug]` and `/category/[slug]`).
+2. **Sort by Price (C1 - Sorting):** Sort products by price (low to high & high to low) with full support for Bengali numerals and numeric sorting.
+3. **Live Price Ticker:** Infinite scrolling marquee on the homepage displaying daily price changes (▲/▼ %).
+4. **User Authentication (BetterAuth):** Seamless sign-in, sign-up, and session management via Email/Password and Social Providers (Google/GitHub).
+5. **Profile Updates (C3 - Profile Update):** Update user profile details directly from the user dashboard.
+6. **Fully Responsive Design:** Optimized layout for mobile, tablet, and desktop devices.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Local Setup Instructions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/your-username/bazardor.git](https://github.com/your-username/bazardor.git)
+   cd bazardor
