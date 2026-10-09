@@ -1,84 +1,113 @@
-// components/Navbar.jsx
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toBnDigit } from "@/lib/utils";
+import { useSession, signOut } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const { data: session } = useSession();
 
-  useEffect(() => {
-    fetch("https://api.api-store.workers.dev/api/bazardor/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data));
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success("সফলভাবে সাইন আউট করা হয়েছে!");
+    } catch (error) {
+      toast.error("সাইন আউট করতে সমস্যা হয়েছে!");
+    }
+  };
 
-    fetch("https://api.api-store.workers.dev/api/bazardor/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+  const categories = [
+    { name: "সব", slug: "" },
+    { name: "চাল", slug: "chal" },
+    { name: "ডাল", slug: "dal" },
+    { name: "তেল", slug: "oil" },
+    { name: "সবজি", slug: "vegetables" },
+    { name: "মাছ-মাংস", slug: "meat-fish" },
+    { name: "মসলা", slug: "spices" },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#f4f6f0] border-b border-gray-200">
-      {/* 1. Top Navbar */}
+    <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
+      {/* Top Bar: Logo, Date & Auth Status */}
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo & Bangla Date */}
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo-icon.png" alt="Logo" className="w-7 h-7 object-contain" />
+          <img src="/logo-icon.png" alt="Logo" className="w-8 h-8 object-contain" />
           <div>
-            <h1 className="text-xl font-bold text-gray-900 leading-tight">বাজার দর</h1>
-            <p className="text-xs text-gray-500">মঙ্গলবার, ৬ অক্টোবর, ২০২৬</p>
+            <span className="font-extrabold text-lg text-gray-900 block leading-none">
+              বাজার দর
+            </span>
+            <span className="text-[10px] text-gray-500 font-medium">
+              আজকের বাজার দর
+            </span>
           </div>
         </Link>
 
-        <div className="flex gap-2">
-          <Link href="/signin" className="btn btn-sm btn-ghost text-gray-700">
-            সাইন ইন
-          </Link>
-          <Link href="/signup" className="btn btn-sm bg-[#0f834d] hover:bg-[#0c6b3e] text-white border-none rounded-lg px-4">
-            সাইন আপ
-          </Link>
+        {/* Auth Buttons / User Profile */}
+        <div className="flex items-center gap-3">
+          {session?.user ? (
+            <div className="flex items-center gap-3">
+              <Link
+                href="/profile"
+                className="flex items-center gap-2 text-xs font-semibold text-gray-700 hover:text-[#0f834d] transition-colors"
+              >
+                <div className="w-7 h-7 rounded-full bg-emerald-100 text-[#0f834d] flex items-center justify-center font-bold">
+                  {session.user.name?.[0]?.toUpperCase() || "👤"}
+                </div>
+                <span>{session.user.name || "প্রোফাইল"}</span>
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="btn btn-xs btn-outline border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 rounded-lg"
+              >
+                সাইন আউট
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/signin"
+                className="btn btn-xs sm:btn-sm btn-ghost text-xs text-gray-700 hover:bg-gray-100 rounded-lg"
+              >
+                সাইন ইন
+              </Link>
+              <Link
+                href="/signup"
+                className="btn btn-xs sm:btn-sm bg-[#0f834d] hover:bg-[#0c6b3e] text-white border-none rounded-lg text-xs"
+              >
+                সাইন আপ
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* 2. Category Nav Links */}
-      <div className="border-t border-b border-gray-200 bg-white/50 backdrop-blur-sm overflow-x-auto">
-        <div className="max-w-6xl mx-auto px-4 flex gap-2 py-2 whitespace-nowrap">
+      {/* Category Navigation Bar */}
+      <div className="bg-gray-50/80 border-t border-gray-100 overflow-x-auto">
+        <div className="max-w-6xl mx-auto px-4 flex items-center gap-1 py-1.5 text-xs whitespace-nowrap scrollbar-none">
           {categories.map((cat) => {
-            const isActive = pathname === `/category/${cat.slug}`;
+            const href = cat.slug ? `/category/${cat.slug}` : "/";
+            const isActive =
+              cat.slug === ""
+                ? pathname === "/"
+                : pathname.startsWith(`/category/${cat.slug}`);
+
             return (
               <Link
-                key={cat.id}
-                href={`/category/${cat.slug}`}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1 ${
+                key={cat.slug}
+                href={href}
+                className={`px-3 py-1.5 rounded-lg transition-all text-xs font-medium ${
                   isActive
                     ? "bg-[#0f834d] text-white shadow-sm"
-                    : "text-gray-700 hover:bg-gray-200"
+                    : "text-gray-600 hover:bg-gray-200/60"
                 }`}
               >
-                <span>{cat.icon}</span>
-                <span>{cat.nameBn}</span>
+                {cat.name}
               </Link>
             );
           })}
-        </div>
-      </div>
-
-      {/* 3. Running Price Ticker (Marquee) */}
-      <div className="bg-white/80 border-b border-gray-200 text-xs py-2 overflow-hidden whitespace-nowrap">
-        <div className="inline-block animate-marquee space-x-6">
-          {products.map((p) => (
-            <span key={p.id} className="inline-flex items-center gap-1 font-medium mx-4 text-gray-700">
-              <span>{p.image}</span>
-              <span className="font-semibold">{p.nameBn}</span>
-              <span>{toBnDigit(p.today)} টাকা/{p.unit}</span>
-              <span className={p.change?.dir === "up" ? "text-red-600 font-bold" : p.change?.dir === "down" ? "text-[#0f834d] font-bold" : "text-gray-500"}>
-                {p.change?.dir === "up" ? "▲" : p.change?.dir === "down" ? "▼" : "—"}{" "}
-                {toBnDigit(Math.abs(p.change?.pct || 0))}%
-              </span>
-            </span>
-          ))}
         </div>
       </div>
     </header>
