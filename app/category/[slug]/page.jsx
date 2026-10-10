@@ -17,7 +17,7 @@ function CategoryContent() {
   useEffect(() => {
     if (!slug) return;
 
-    fetch(`https://api.api-store.workers.dev/api/bazardor/products?category=${slug}`)
+    fetch(`https://openapi.programming-hero.com/api/bazardor/products?category=${slug}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);

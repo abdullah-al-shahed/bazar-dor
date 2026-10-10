@@ -15,7 +15,7 @@ function ProductDetailsContent() {
   useEffect(() => {
     if (!slug) return;
 
-    fetch(`https://api.api-store.workers.dev/api/bazardor/products/${slug}`)
+    fetch(`https://openapi.programming-hero.com/api/bazardor/products/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);

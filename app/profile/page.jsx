@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function ProfilePage() {
   const user = {
-    name: "Rezwan Ahmed",
-    email: "rezwanahmed@gmail.com",
+    name: "shahed abdullah",
+    email: "shahedxyz@gmail.com",
   };
 
   return (

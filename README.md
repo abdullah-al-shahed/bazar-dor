@@ -25,10 +25,3 @@
 6. **Fully Responsive Design:** Optimized layout for mobile, tablet, and desktop devices.
 
 ---
-
-## 🛠️ Local Setup Instructions
-
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/your-username/bazardor.git](https://github.com/your-username/bazardor.git)
-   cd bazardor

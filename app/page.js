@@ -7,7 +7,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://api.api-store.workers.dev/api/bazardor/products")
+    fetch("https://openapi.programming-hero.com/api/bazardor/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);

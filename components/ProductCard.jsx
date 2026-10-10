@@ -1,4 +1,3 @@
-// components/ProductCard.jsx
 import Link from "next/link";
 import { toBnDigit, formatUnit } from "@/lib/utils";
 

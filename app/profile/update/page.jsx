@@ -1,4 +1,3 @@
-// app/profile/update/page.jsx
 "use client";
 
 import { useState } from "react";
