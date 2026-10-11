@@ -2,19 +2,37 @@
 import { useState, useEffect } from "react";
 
 export default function LiveClock() {
-  const [time, setTime] = useState(new Date());
+  const [timeString, setTimeString] = useState("");
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000); // প্রতি ১ সেকেন্ডে আপডেট হবে
+    const updateTime = () => {
+      const now = new Date();
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      const formattedDate = now.toLocaleDateString("bn-BD", options);
+      const formattedTime = now.toLocaleTimeString("bn-BD");
+      setTimeString(`${formattedDate} - ${formattedTime}`);
+    };
 
-    return () => clearInterval(timer); // মেমোরি লিক বন্ধ করতে ক্লিনআপ
+    updateTime();
+
+    const timer = setInterval(updateTime, 1000);
+
+    return () => clearInterval(timer);
   }, []);
 
+  
+  if (!timeString) {
+    return <span className="text-gray-400">তারিখ ও সময় লোড হচ্ছে...</span>;
+  }
+
   return (
-    <span>
-      {time.toLocaleTimeString("bn-BD")}
-    </span>
+    <div className="flex items-center gap-2">
+      <span>{timeString}</span>
+    </div>
   );
 }

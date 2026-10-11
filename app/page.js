@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import ProductCard from "@/components/ProductCard";
-
+import LiveClock from "@/components/LiveClock";
 async function ProductList() {
   let products = [];
   try {
@@ -63,7 +63,7 @@ export default function HomePage() {
       <section className="bg-emerald-50 rounded-2xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-4 max-w-lg">
           <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-medium">
-            শনিবার, ১০ অক্টোবর, ২০২৬
+            <LiveClock/>
           </span>
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
             আজকের বাজারের দাম এক নজরে

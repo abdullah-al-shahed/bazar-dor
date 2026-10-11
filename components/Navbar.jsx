@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import toast from "react-hot-toast";
+import LiveClock from "@/components/LiveClock";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -40,7 +41,7 @@ export default function Navbar() {
               বাজার দর
             </span>
             <span className="text-[10px] text-gray-500 font-medium">
-              আজকের বাজার দর
+              <LiveClock/>
             </span>
           </div>
         </Link>
